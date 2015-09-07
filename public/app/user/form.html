@@ -5,47 +5,47 @@
         <!-- FORM -->
         <form name="userForm" ng-submit="userForm.$valid && addUser(userForm.$valid)" novalidate>
 
-            <!-- FIRST NAME -->
+            <!-- NAME -->
             <div class="form-group">
-                <label>First Name *</label>
-                <input type="text" class="form-control" name="firstName" ng-model="user.firstName" required />
-                <div class="help-block" ng-messages="userForm.firstName.$error" ng-show="userForm.firstName.$touched">
+                <label>Name *</label>
+                <input type="text" class="form-control" name="firstName" placeholder="First" ng-model="user.firstName" required />
+                <div class="help-block message" ng-messages="userForm.firstName.$error" ng-show="userForm.firstName.$touched">
                     <div ng-messages-include="common/messages.html"></div>
                 </div>
             </div>
 
             <!-- LAST NAME -->
-            <div class="form-group" ng-class="{'has-error': userForm.lastName.$invalid && userForm.lastName.$touched}">
+            <div class="form-group">
                 <label>Last Name *</label>
-                <input type="text" class="form-control" name="lastName" ng-model="user.lastName" required />
-                <div class="help-block" ng-messages="userForm.lastName.$error" ng-show="userForm.lastName.$touched">
+                <input type="text" class="form-control" name="lastName" placeholder="Last" ng-model="user.lastName" required />
+                <div class="help-block message" ng-messages="userForm.lastName.$error" ng-show="userForm.lastName.$touched">
                     <div ng-messages-include="common/messages.html"></div>
                 </div>
             </div>
 
             <!-- EMAIL -->
-            <div class="form-group" ng-class="{'has-error': userForm.email.$invalid && userForm.email.$touched}">
+            <div class="form-group">
                 <label>Email *</label>
                 <input type="email" class="form-control" name="email" ng-model="user.email" required />
-                <div class="help-block" ng-messages="userForm.email.$error" ng-show="userForm.email.$touched">
+                <div class="help-block message" ng-messages="userForm.email.$error" ng-show="userForm.email.$touched">
                     <div ng-messages-include="common/messages.html"></div>
                 </div>
             </div>
 
             <!-- PASSWORD -->
-            <div class="form-group" ng-class="{'has-error': userForm.password.$invalid && userForm.password.$touched}">
+            <div class="form-group">
                 <label>Password *</label>
                 <input type="password" class="form-control" name="password" id="pwd" ng-model="user.password" required />
-                 <div class="help-block" ng-messages="userForm.password.$error" ng-show="userForm.password.$touched">
+                 <div class="help-block message" ng-messages="userForm.password.$error" ng-show="userForm.password.$touched">
                     <div ng-messages-include="common/messages.html"></div>
                 </div>
             </div>
 
             <!-- RETYPE PASSWORD -->
-            <div class="form-group" ng-class="{'has-error': userForm.confirmPassword.$invalid && userForm.confirmPassword.$touched}">
+            <div class="form-group">
                 <label>Confirm Password *</label>
-                <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" ng-model="user.confirmPassword" required password-match="user.password" />
-                <div class="help-block" ng-messages="userForm.confirmPassword.$error" ng-show="userForm.confirmPassword.$touched">
+                <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" ng-model="user.confirmPassword" required ng-match="user.password" />
+                <div class="help-block message" ng-messages="userForm.confirmPassword.$error" ng-show="userForm.confirmPassword.$touched">
                     <div ng-messages-include="common/messages.html"></div>
                 </div>
             </div>

@@ -5997,6 +5997,9 @@ body {
 table {
   font-size: 10pt; }
 
+a:hover {
+  cursor: pointer; }
+
 .footer {
   padding: 10px;
   font-size: 9pt;

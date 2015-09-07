@@ -9,61 +9,15 @@
 </head>
 <body ng-app="mulodoApp">
 
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav-bar></nav-bar>
+
     <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myNavbar"
-                    aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/app">Mulodo CMS</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-right" id="myNavbar">
-            <form class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                    <input ng-model="search" class="form-control" placeholder="Search">
-                </div>
-            </form>
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Categories</a></li>
-                <li><a href="#">Articles</a></li>
-                <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">User <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#/user/create">Add new user</a></li>
-                        <li><a href="#/user">User list</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Import | Export</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">Tuan Vu<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Settings</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+        <ng-view></ng-view>
     </div>
-</nav>
 
-<div class="container-fluid">
-    <ng-view></ng-view>
-</div>
+    <footer></footer>
 
-<div class="footer">
-    Copyright 2015 &copy; Tuan Vu. All rights reserved.
-</div>
-
-<!-- Scripts -->
-<script src="js/all.js"></script>
+    <!-- Scripts -->
+    <script src="js/all.js"></script>
 </body>
 </html>
