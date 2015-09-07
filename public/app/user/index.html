@@ -22,8 +22,9 @@
             <tr dir-paginate="user in users | filter: search | itemsPerPage: perPage" total-items="total"
                 current-page="pagination.current">
                 <td>
-                    <a ng-click="editUser({{ user.id }})">Edit</a> | 
-                    <a ng-click="deleteUser({{ user.id }})">Delete</a></td>
+                    <a ng-click="editUser(user.id)">Edit</a> |
+                    <a ng-click="deleteUser(user.id)">Delete</a> 
+                </td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.email }}</td>

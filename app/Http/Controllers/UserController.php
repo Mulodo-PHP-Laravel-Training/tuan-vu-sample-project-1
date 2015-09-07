@@ -33,15 +33,15 @@ class UserController extends RestfulController
     public function store(Request $request)
     {
 
-        $auth = Auth::onceBasic();
-        if ($auth)
-        {
-            return response()->json(['code' => 401, "message" => "NOT authorized access."], 401);
-        }
+        // $auth = Auth::onceBasic();
+        // if ($auth)
+        // {
+        //     return response()->json(['code' => 401, "message" => "NOT authorized access."], 401);
+        // }
 
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required|max:255',
-            'last_name'  => 'required|max:255',
+            'firstName' => 'required|max:255',
+            'lastName'  => 'required|max:255',
             'email'      => 'required|email|max:255|unique:users',
             'password'   => 'required|min:6',
         ]);
@@ -50,9 +50,9 @@ class UserController extends RestfulController
             return response()->json(['code' => 400, "message" => $validator->messages()], 400);
         }
 
-        $user = User;
-        $user->first_name = $request->input('first_name');
-        $user->last_name  = $request->input('last_name');
+        $user = new User;
+        $user->firstName = $request->input('firstName');
+        $user->lastName  = $request->input('lastName');
         $user->email      = $request->input('email');
         $user->password   = bcrypt($request->input['password']);
         if ($user->save())
@@ -147,11 +147,11 @@ class UserController extends RestfulController
      */
     public function destroy($id)
     {
-        $auth = Auth::onceBasic();
-        if ($auth)
-        {
-            return response()->json(['code' => 401, "message" => "NOT authorized access."], 401);
-        }
+        // $auth = Auth::onceBasic();
+        // if ($auth)
+        // {
+        //     return response()->json(['code' => 401, "message" => "NOT authorized access."], 401);
+        // }
 
         $user = User::find($id);
         if (empty($user))

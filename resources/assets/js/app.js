@@ -3,7 +3,11 @@
  */
 (function(){
 
-    var app = angular.module('mulodoApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngMessages']);
+    var app = angular.module('mulodoApp', [
+        'ngRoute', 
+        'angularUtils.directives.dirPagination', 
+        'ngMessages',
+    ]);
     var api = 'http://api.mulodo.dev';
 
     app.directive('navBar', function() {
@@ -20,7 +24,7 @@
         };
     });
 
-    app.config(['$routeProvider', function($routeProvider) {
+    app.config(function($routeProvider) {
         $routeProvider.
             when('/user', {
                 templateUrl: 'user/index.html',
@@ -37,9 +41,9 @@
             otherwise({
                 redirectTo: ''
             });
-    }]);
+    });
 
-    app.controller('userListController', function ($scope, $http) {
+    app.controller('userListController', function ($scope, $http, $route) {
         $scope.users = [];
         $scope.total = 60;
         $scope.perPage = 5;
@@ -60,40 +64,56 @@
                     $scope.total = result.data.total;
                 });
         }
-    });
 
-    app.controller('userCreateController', function($scope) {
-        $scope.submitForm = function(isValid) {
-            arlet('our form is amazing');
+        $scope.deleteUser = function(id) {
+            $http.delete(api + '/user/' + id)
+            .success(function(data, status, headers, config) {
+                alert('Delete user successful!');
+                $route.reload();
+            });
         };
     });
 
-    app.directive("ngMatch", ['$parse', function($parse) {
-            var directive = {
-                link: link,
-                restrict: 'A',
-                require: '?ngModel'
-            };
-            return directive;
-
-            function link(scope, elem, attrs, ctrl) {
-                if(!ctrl) return;
-                if(!attrs.ngMatch) return;
-
-                var firstPassword = $parse(attrs.ngMatch);
-
-                var validator = function(value) {
-                    var temp = firstPassword(scope),
-                    v = value === temp;
-                    ctrl.$setValidity('match', v);
-                    return value;
-                };
-            }
-            ctrl.$parseers.unshift(validator);
-            ctrl.$formatters.push(validator);
-            attrs.$observe('ngMatch', function() {
-                validator(ctrl.$viewValue);
+    app.controller('userCreateController', function($scope, $http, $httpParamSerializer, $location) {
+        
+        $scope.addUser = function(user) {
+            $http.post(api + '/user', $httpParamSerializer($scope.user), {
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function(data, status, headers, config) {
+                alert('Add new user successful!');
+                $location.path("/user");
+            }).error(function(data, status, headers, config) {
+                alert('Error!');
             });
-        }]);
+        };
+    });
+
+    // app.directive("ngMatch", ['$parse', function($parse) {
+    //         var directive = {
+    //             link: link,
+    //             restrict: 'A',
+    //             require: '?ngModel'
+    //         };
+    //         return directive;
+
+    //         function link(scope, elem, attrs, ctrl) {
+    //             if(!ctrl) return;
+    //             if(!attrs.ngMatch) return;
+
+    //             var firstPassword = $parse(attrs.ngMatch);
+
+    //             var validator = function(value) {
+    //                 var temp = firstPassword(scope),
+    //                 v = value === temp;
+    //                 ctrl.$setValidity('match', v);
+    //                 return value;
+    //             };
+    //         }
+    //         ctrl.$parseers.unshift(validator);
+    //         ctrl.$formatters.push(validator);
+    //         attrs.$observe('ngMatch', function() {
+    //             validator(ctrl.$viewValue);
+    //         });
+    //     }]);
 })();
 
