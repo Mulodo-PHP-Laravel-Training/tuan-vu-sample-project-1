@@ -3,100 +3,96 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends RestfulController
 {
 
+//    public function __construct()
+//    {
+//        $this->middleware('jwt.auth');
+//    }
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of user.
      *
-     * @return Response
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
         $limit = (empty($request->input('limit'))) ? 5 : $request->input('limit');
-        $user = User::paginate($limit);
-        return response()->json($user, 200);
+        $user  = User::paginate($limit);
+
+        return response()->json($user, HttpResponse::HTTP_OK);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created user in database.
      *
-     * @param  Request $request
+     * @param Request $request
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-
-        // $auth = Auth::onceBasic();
-        // if ($auth)
-        // {
-        //     return response()->json(['code' => 401, "message" => "NOT authorized access."], 401);
-        // }
-
         $validator = Validator::make($request->all(), [
             'firstName' => 'required|max:255',
             'lastName'  => 'required|max:255',
-            'email'      => 'required|email|max:255|unique:users',
-            'password'   => 'required|min:6',
+            'email'     => 'required|email|max:255|unique:users',
+            'password'  => 'required|min:6',
         ]);
         if ($validator->fails())
         {
-            return response()->json(['code' => 400, "message" => $validator->messages()], 400);
+            return response()->json(['code' => HttpResponse::HTTP_BAD_REQUEST, "message" => $validator->messages()], HttpResponse::HTTP_BAD_REQUEST);
         }
 
-        $user = new User;
+        $user            = new User;
         $user->firstName = $request->input('firstName');
         $user->lastName  = $request->input('lastName');
-        $user->email      = $request->input('email');
-        $user->password   = bcrypt($request->input['password']);
+        $user->email     = $request->input('email');
+        $user->password  = bcrypt($request->input['password']);
         if ($user->save())
         {
-            return response()->json(["result" => 'success'], 200);
+            return response()->json(["result" => 'success'], HttpResponse::HTTP_OK);
         }
     }
 
     /**
-     * Display the specified resource.
+     * Display user information.
      *
-     * @param  int $id
+     * @param $id User ID
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-       $user = User::find($id);
-       if (!$user)
+        $user = User::find($id);
+        if (!$user)
         {
-            return response()->json(['code' => 404, "message" => "User not exist"], 404);
+            return response()->json(['code' => HttpResponse::HTTP_NOT_FOUND, "message" => "User not exist"], HttpResponse::HTTP_NOT_FOUND);
         }
+
         return response()->json($user);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update user in database.
      *
-     * @param  Request $request
-     * @param  int     $id
+     * @param Request $request
+     * @param         $id User ID
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        $auth = Auth::onceBasic();
-        if ($auth)
-        {
-            return response()->json(['code' => 401, "message" => "NOT authorized access."], 401);
-        }
         $user = User::find($id);
         if (!$user)
         {
-            return response()->json(['code' => 404, "message" => "User not exist"], 404);
+            return response()->json(['code' => HttpResponse::HTTP_NOT_FOUND, "message" => "User not exist"], HttpResponse::HTTP_NOT_FOUND);
         }
 
         $validator = Validator::make($request->all(), [
@@ -107,7 +103,7 @@ class UserController extends RestfulController
         ]);
         if ($validator->fails())
         {
-            return response()->json(['code' => 400, "message" => $validator->messages()], 400);
+            return response()->json(['code' => HttpResponse::HTTP_BAD_REQUEST, "message" => $validator->messages()], HttpResponse::HTTP_BAD_REQUEST);
         }
 
         $firstName = $request->input('first_name');
@@ -134,34 +130,28 @@ class UserController extends RestfulController
 
         if ($user->update())
         {
-            return response()->json(["result" => 'success'], 200);
+            return response()->json(["result" => 'success'], HttpResponse::HTTP_OK);
         }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove user from database.
      *
-     * @param  int $id
+     * @param $id
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        // $auth = Auth::onceBasic();
-        // if ($auth)
-        // {
-        //     return response()->json(['code' => 401, "message" => "NOT authorized access."], 401);
-        // }
-
         $user = User::find($id);
         if (empty($user))
         {
-            return response()->json(['code' => 404, "message" => "User not exist"], 404);
+            return response()->json(['code' => HttpResponse::HTTP_NOT_FOUND, "message" => "User not exist"], HttpResponse::HTTP_NOT_FOUND);
         }
 
         if ($user->delete())
         {
-            return response()->json(["result" => 'success'], 200);
+            return response()->json(["result" => 'success'], HttpResponse::HTTP_OK);
         }
     }
 }

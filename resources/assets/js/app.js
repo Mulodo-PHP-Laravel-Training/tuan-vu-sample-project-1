@@ -1,31 +1,46 @@
 /**
  * Created by Tuan on 9/1/15.
  */
-(function(){
+(function () {
+    'use strict';
 
     var app = angular.module('mulodoApp', [
-        'ngRoute', 
-        'angularUtils.directives.dirPagination', 
+        'ngRoute',
+        'angularUtils.directives.dirPagination',
         'ngMessages',
+        'ngStorage'
     ]);
     var api = 'http://api.mulodo.dev';
 
-    app.directive('navBar', function() {
+    app.directive('navBar', function () {
         return {
             restrict: 'E',
             templateUrl: 'layout/navbar.html'
         };
     });
 
-    app.directive('footer', function() {
+    app.directive('footer', function () {
         return {
             restrict: 'E',
             templateUrl: 'layout/footer.html'
         };
     });
 
-    app.config(function($routeProvider) {
+    app.constant('urls', {
+        BASE: 'http://api.mulodo.dev/app',
+        BASE_API: 'http://api.mulodo.dev'
+    });
+
+    app.config(function ($routeProvider) {
         $routeProvider.
+            when('/login', {
+                templateUrl: 'auth/login.html',
+                controller: 'AuthController as auth'
+            }).
+            when('/logout', {
+                templateUrl: 'auth/logout.html',
+                controller: 'AuthController as auth'
+            }).
             when('/user', {
                 templateUrl: 'user/index.html',
                 controller: 'userListController'
@@ -53,41 +68,45 @@
             current: 1
         };
 
-        $scope.pageChanged = function(newPage) {
+        $scope.pageChanged = function (newPage) {
             getResultsPage(newPage);
         };
 
         function getResultsPage(pageNumber) {
             $http.get(api + '/user?page=' + pageNumber + '&limit=' + $scope.perPage)
-                .then(function(result) {
+                .then(function (result) {
                     $scope.users = result.data.data;
                     $scope.total = result.data.total;
                 });
         }
 
-        $scope.deleteUser = function(id) {
+        $scope.deleteUser = function (id) {
             $http.delete(api + '/user/' + id)
-            .success(function(data, status, headers, config) {
-                alert('Delete user successful!');
-                $route.reload();
-            });
+                .success(function () {
+                    alert('Delete user successful!');
+                    $route.reload();
+                });
         };
     });
 
-    app.controller('userCreateController', function($scope, $http, $httpParamSerializer, $location) {
-        
-        $scope.addUser = function(user) {
+    app.controller('userCreateController', function ($scope, $http, $httpParamSerializer, $location) {
+        $scope.addUser = function (user) {
             $http.post(api + '/user', $httpParamSerializer($scope.user), {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).success(function(data, status, headers, config) {
+            }).success(function () {
                 alert('Add new user successful!');
                 $location.path("/user");
-            }).error(function(data, status, headers, config) {
+            }).error(function () {
                 alert('Error!');
             });
         };
     });
 
+    app.controller('AuthController', function () {
+
+    });
+
+    // TODO: make confirm password in form
     // app.directive("ngMatch", ['$parse', function($parse) {
     //         var directive = {
     //             link: link,

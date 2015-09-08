@@ -11,8 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+//Route::post('/login', 'TokenAuth\AuthController@authenticate');
+//
+//Route::get('/', function ()
+//{
+//    return view('welcome');
+//});
+
+//Route::resource('user', 'UserController', ['except' => ['create', 'edit']]);
+
+Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::get('/', function ()
+    {
+        return view('welcome');
+    });
+
+    Route::resource('user', 'UserController', ['except' => ['create', 'edit']]);
 });
 
-Route::resource('user', 'UserController', ['except' => ['create', 'edit']]);
+Route::post('/auth', 'TokenAuth\AuthController@authenticate');
