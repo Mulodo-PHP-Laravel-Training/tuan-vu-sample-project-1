@@ -25,6 +25,8 @@ class RestfulController extends Controller
     public function getInput(Request $request)
     {
         $this->inputRequest = $request->only($this->nameInputParams);
+
+        return $this->inputRequest;
     }
 
     /**

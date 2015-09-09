@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers\TokenAuth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\RestfulController;
 use App\Http\Requests;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response as HttpResponse;
 use JWTAuth;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
-class AuthController extends Controller
+class AuthController extends RestfulController
 {
+
+    protected $nameInputParams = ['email', 'password'];
+
+    protected $rules = [
+        'email'    => 'required|email|max:255',
+        'password' => 'required',
+    ];
 
     /**
      * Create token-based authentication by user information login request
@@ -17,14 +24,17 @@ class AuthController extends Controller
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws TokenInvalidException
+     * @throws \App\Exceptions\ValidationException
      */
     public function authenticate(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $input = $this->getInput($request);
+        $this->validator();
 
-        if (!$token = JWTAuth::attempt($credentials))
+        if (!$token = JWTAuth::attempt($input))
         {
-            return response()->json(['error' => 'NOT authorized access.'], HttpResponse::HTTP_UNAUTHORIZED);
+            throw new TokenInvalidException('NOT authorized access');
         }
 
         JWTAuth::getToken();

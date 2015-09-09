@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Middleware\GetUserFromToken;
@@ -55,23 +56,32 @@ class Handler extends ExceptionHandler
             return response()->json(['Sorry, the page you are looking for could not be found.'], $e->getStatusCode());
         }
 
-        if($e instanceof TokenInvalidException) {
-            return response()->json(['Token is invalid'], $e->getStatusCode());
+        if($e instanceof MethodNotAllowedException)
+        {
+            return response()->json(['Sorry, the page you are looking for could not be found.'], $e->getStatusCode());
         }
 
-        if($e instanceof TokenExpiredException) {
-            return response()->json(['Token has expired'], $e->getStatusCode());
-        }
-
-        if ($e instanceof APIException){
-            return response()->json([
+        if ($e instanceof \Exception){
+            $message = [
                 'status' => 'error',
                 'result' => [
                     'code' => $e->getStatusCode(),
                     'description' => $e->getMessage()
                 ]
-            ], $e->getStatusCode());
+            ];
+            return response($message, $e->getStatusCode());
         }
+
+
+//        if ($e instanceof APIException){
+//            return response()->json([
+//                'status' => 'error',
+//                'result' => [
+//                    'code' => $e->getStatusCode(),
+//                    'description' => $e->getMessage()
+//                ]
+//            ], $e->getStatusCode());
+//        }
 
         return parent::render($request, $e);
     }
