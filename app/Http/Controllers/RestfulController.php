@@ -32,7 +32,6 @@ class RestfulController extends Controller
     /**
      * Validate the given request with the given rules.
      *
-     * @param Request $request
      * @param array   $messages
      *
      * @throws \App\Exceptions\ValidationException
@@ -41,7 +40,10 @@ class RestfulController extends Controller
     {
         $validator = Validator::make($this->inputRequest, $this->rules);
 
-        $messages = ($messages) ? $messages : $validator->messages();
+        if(!$messages)
+        {
+            $messages = $validator->messages();
+        }
 
         if ($validator->fails()) {
             throw new ValidationException($messages);

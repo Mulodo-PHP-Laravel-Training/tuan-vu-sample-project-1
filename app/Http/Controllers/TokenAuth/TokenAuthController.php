@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
-class AuthController extends RestfulController
+class TokenAuthController extends RestfulController
 {
 
     protected $nameInputParams = ['email', 'password'];
@@ -29,17 +29,14 @@ class AuthController extends RestfulController
      */
     public function authenticate(Request $request)
     {
-        $input = $this->getInput($request);
+        $credentials = $this->getInput($request);
         $this->validator();
 
-        if (!$token = JWTAuth::attempt($input))
+        if (!$token = JWTAuth::attempt($credentials))
         {
-            throw new TokenInvalidException('NOT authorized access');
+            throw new TokenInvalidException('Invalid Credentials');
         }
-
-        JWTAuth::getToken();
 
         return response()->json(compact('token'));
     }
-
 }

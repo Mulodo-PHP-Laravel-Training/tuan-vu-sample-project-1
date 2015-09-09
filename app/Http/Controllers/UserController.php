@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ApiException;
 use App\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 
