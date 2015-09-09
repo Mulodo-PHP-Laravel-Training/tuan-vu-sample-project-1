@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\TokenAuth;
 
+use App\Exceptions\ApiException;
 use App\Http\Controllers\RestfulController;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
@@ -38,5 +40,16 @@ class TokenAuthController extends RestfulController
         }
 
         return response()->json(compact('token'));
+    }
+
+    public function getAuthenticatedUser()
+    {
+        if(! $user = JWTAuth::parseToken()->authenticate())
+        {
+            throw new ApiException('User not found', HttpResponse::HTTP_NOT_FOUND);
+        }
+
+        // the token is valid and we have found the user via the sub claim
+        return response()->json(compact('user'));
     }
 }

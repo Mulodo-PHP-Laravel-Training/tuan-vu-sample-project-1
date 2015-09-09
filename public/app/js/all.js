@@ -859,140 +859,219 @@ d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector
 /**
  * Created by Tuan on 9/1/15.
  */
+
+
 (function () {
     'use strict';
 
-    var app = angular.module('mulodoApp', [
+    var api = 'http://api.mulodo.dev';
+
+    angular.module('mulodoApp', [
         'ngRoute',
         'angularUtils.directives.dirPagination',
         'ngMessages',
         'ngStorage'
-    ]);
-    var api = 'http://api.mulodo.dev';
+    ])
+        .constant('urls', {
+            BASE: 'http://api.mulodo.dev/',
+            BASE_AUTH: 'http://api.mulodo.dev/auth'
+        })
+        .directive('navBar', function () {
+            return {
+                restrict: 'E',
+                templateUrl: 'layout/navbar.html'
+            };
+        })
+        .directive('footer', function () {
+            return {
+                restrict: 'E',
+                templateUrl: 'layout/footer.html'
+            };
+        })
+        .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
 
-    app.directive('navBar', function () {
-        return {
-            restrict: 'E',
-            templateUrl: 'layout/navbar.html'
-        };
-    });
-
-    app.directive('footer', function () {
-        return {
-            restrict: 'E',
-            templateUrl: 'layout/footer.html'
-        };
-    });
-
-    app.constant('urls', {
-        BASE: 'http://api.mulodo.dev/app',
-        BASE_API: 'http://api.mulodo.dev'
-    });
-
-    app.config(function ($routeProvider) {
-        $routeProvider.
-            when('/login', {
-                templateUrl: 'auth/login.html',
-                controller: 'AuthController as auth'
-            }).
-            when('/logout', {
-                templateUrl: '',
-                controller: 'AuthController as auth'
-            }).
-            when('/user', {
-                templateUrl: 'user/index.html',
-                controller: 'userListController'
-            }).
-            when('/user/create', {
-                templateUrl: 'user/form.html',
-                controller: 'userCreateController'
-            }).
-            when('/user/edit', {
-                templateUrl: 'user/form.html',
-                controller: 'userEditController'
-            }).
-            otherwise({
-                redirectTo: ''
-            });
-    });
-
-    app.controller('userListController', function ($scope, $http, $route) {
-        $scope.users = [];
-        $scope.total = 60;
-        $scope.perPage = 5;
-        getResultsPage(1);
-
-        $scope.pagination = {
-            current: 1
-        };
-
-        $scope.pageChanged = function (newPage) {
-            getResultsPage(newPage);
-        };
-
-        function getResultsPage(pageNumber) {
-            $http.get(api + '/user?page=' + pageNumber + '&limit=' + $scope.perPage)
-                .then(function (result) {
-                    $scope.users = result.data.data;
-                    $scope.total = result.data.total;
+            $routeProvider.
+                when('/', {
+                    templateUrl: 'layout/home.html',
+                    controller: 'HomeController'
+                }).
+                when('/signin', {
+                    templateUrl: 'auth/login.html',
+                    controller: 'HomeController'
+                }).
+                when('/signout', {
+                    templateUrl: 'auth/logout.html',
+                    controller: 'HomeController'
+                }).
+                when('/user', {
+                    templateUrl: 'user/index.html',
+                    controller: 'userListController'
+                }).
+                when('/user/create', {
+                    templateUrl: 'user/form.html',
+                    controller: 'userCreateController'
+                }).
+                when('/user/edit', {
+                    templateUrl: 'user/form.html',
+                    controller: 'userEditController'
+                }).
+                otherwise({
+                    redirectTo: '/'
                 });
-        }
 
-        $scope.deleteUser = function (id) {
-            $http.delete(api + '/user/' + id)
-                .success(function () {
-                    alert('Delete user successful!');
-                    $route.reload();
-                });
-        };
-    });
-
-    app.controller('userCreateController', function ($scope, $http, $httpParamSerializer, $location) {
-        $scope.addUser = function (user) {
-            $http.post(api + '/user', $httpParamSerializer($scope.user), {
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).success(function () {
-                alert('Add new user successful!');
-                $location.path("/user");
-            }).error(function () {
-                alert('Error!');
+            $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
+                return {
+                    'request': function (config) {
+                        config.headers = config.headers || {};
+                        if ($localStorage.token) {
+                            config.headers.Authorization = 'Bearer ' + $localStorage.token;
+                        }
+                        return config;
+                    },
+                    'responseError': function (response) {
+                        if (response.status === 401 || response.status === 403) {
+                            delete $localStorage.token;
+                            $location.path('/signin');
+                        }
+                        return $q.reject(response);
+                    }
+                };
+            }]);
+        }])
+        .run(function ($rootScope, $location, $localStorage) {
+            $rootScope.$on("$routeChangeStart", function () {
+                if ($localStorage.token == null) {
+                    $location.path("/signin");
+                }
             });
-        };
-    });
+        })
+        .controller('HomeController', ['$rootScope', '$scope', '$location', '$localStorage', 'Auth',
+            function ($rootScope, $scope, $location, $localStorage, Auth) {
+                function successAuth(res) {
+                    $localStorage.token = res.token;
+                    $location.path('/');
+                }
 
-    app.controller('AuthController', function () {
+                $scope.signin = function () {
+                    var formData = {
+                        email: $scope.email,
+                        password: $scope.password
+                    };
 
-    });
+                    Auth.signin(formData, successAuth, function () {
+                        $rootScope.error = 'Invalid credentials';
+                    });
 
-    // TODO: make confirm password in form
-    // app.directive("ngMatch", ['$parse', function($parse) {
-    //         var directive = {
-    //             link: link,
-    //             restrict: 'A',
-    //             require: '?ngModel'
-    //         };
-    //         return directive;
+                };
 
-    //         function link(scope, elem, attrs, ctrl) {
-    //             if(!ctrl) return;
-    //             if(!attrs.ngMatch) return;
+                $scope.signup = function () {
+                    var formData = {
+                        email: $scope.email,
+                        password: $scope.password
+                    };
 
-    //             var firstPassword = $parse(attrs.ngMatch);
+                    Auth.signup(formData, successAuth, function (res) {
+                        $rootScope.error = res.error || 'Failed to sign up.';
+                    });
+                };
 
-    //             var validator = function(value) {
-    //                 var temp = firstPassword(scope),
-    //                 v = value === temp;
-    //                 ctrl.$setValidity('match', v);
-    //                 return value;
-    //             };
-    //         }
-    //         ctrl.$parseers.unshift(validator);
-    //         ctrl.$formatters.push(validator);
-    //         attrs.$observe('ngMatch', function() {
-    //             validator(ctrl.$viewValue);
-    //         });
-    //     }]);
+                $scope.signout = function () {
+                    Auth.signout(function () {
+                        $location.path('/');
+                    });
+                };
+                $scope.token = $localStorage.token;
+                $scope.tokenClaims = Auth.getTokenClaims();
+            }])
+        .controller('userListController', function ($scope, $http, $route) {
+            $scope.users = [];
+            $scope.total = 60;
+            $scope.perPage = 5;
+            getResultsPage(1);
+
+            $scope.pagination = {
+                current: 1
+            };
+
+            function getResultsPage(pageNumber) {
+                $http.get(api + '/user?page=' + pageNumber + '&limit=' + $scope.perPage)
+                    .then(function (result) {
+                        $scope.users = result.data.data;
+                        $scope.total = result.data.total;
+                    });
+            }
+
+            $scope.pageChanged = function (newPage) {
+                getResultsPage(newPage);
+            };
+
+            $scope.deleteUser = function (id) {
+                $http.delete(api + '/user/' + id)
+                    .success(function () {
+                        alert('Delete user successful!');
+                        $route.reload();
+                    });
+            };
+        })
+        .controller('userCreateController', function ($scope, $http, $httpParamSerializer, $location) {
+            $scope.addUser = function (user) {
+                $http.post(api + '/user', $httpParamSerializer($scope.user), {
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).success(function () {
+                    alert('Add new user successful!');
+                    $location.path("/user");
+                }).error(function () {
+                    alert('Error!');
+                });
+            };
+        })
+        .factory('Auth', ['$http', '$localStorage', 'urls', function ($http, $localStorage, urls) {
+            function urlBase64Decode(str) {
+                var output = str.replace('-', '+').replace('_', '/');
+                switch (output.length % 4) {
+                    case 0:
+                        break;
+                    case 2:
+                        output += '==';
+                        break;
+                    case 3:
+                        output += '=';
+                        break;
+                    default:
+                        throw 'Illegal base64url string!';
+                }
+                return window.atob(output);
+            }
+
+            function getClaimsFromToken() {
+                var token = $localStorage.token;
+                var user = {};
+                if (typeof token !== 'undefined') {
+                    var encoded = token.split('.')[1];
+                    user = JSON.parse(urlBase64Decode(encoded));
+                }
+                return user;
+            }
+
+            var tokenClaims = getClaimsFromToken();
+
+            return {
+                signup: function (data, success, error) {
+                    $http.post(urls.BASE_AUTH + '/signin', data).success(success).error(error);
+                },
+                signin: function (data, success, error) {
+                    $http.post(urls.BASE_AUTH + '/signin', data).success(success).error(error);
+                },
+                signout: function (success) {
+                    tokenClaims = {};
+                    delete $localStorage.token;
+                    success();
+                },
+                getTokenClaims: function () {
+                    return tokenClaims;
+                }
+            };
+        }]);
+
 })();
-
-
 //# sourceMappingURL=all.js.map

@@ -17,7 +17,8 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         return view('welcome');
     });
 
-    Route::resource('user', 'UserController', ['except' => ['create', 'edit']]);
-});
 
-Route::post('/auth', 'TokenAuth\TokenAuthController@authenticate');
+});
+Route::resource('user', 'UserController', ['except' => ['create', 'edit']]);
+Route::post('/auth/signin', 'TokenAuth\TokenAuthController@authenticate');
+Route::get('/auth/user', 'TokenAuth\TokenAuthController@getAuthenticatedUser');
