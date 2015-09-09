@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ApiException;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
-use Illuminate\Support\Facades\Validator;
 
 class UserController extends RestfulController
 {
 
-//    public function __construct()
-//    {
-//        $this->middleware('jwt.auth');
-//    }
+    protected $nameInputParams = ['firstName', 'lastName', 'email', 'password'];
+
+    protected $rules = [
+        'firstName' => 'required|max:255',
+        'lastName'  => 'required|max:255',
+        'email'     => 'required|email|max:255|unique:users',
+        'password'  => 'required|min:6',
+    ];
 
     /**
      * Display a listing of user.
@@ -27,7 +31,7 @@ class UserController extends RestfulController
         $limit = (empty($request->input('limit'))) ? 5 : $request->input('limit');
         $user  = User::paginate($limit);
 
-        return response()->json($user, HttpResponse::HTTP_OK);
+        return $this->responseApi($user);
     }
 
     /**
@@ -39,16 +43,8 @@ class UserController extends RestfulController
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'firstName' => 'required|max:255',
-            'lastName'  => 'required|max:255',
-            'email'     => 'required|email|max:255|unique:users',
-            'password'  => 'required|min:6',
-        ]);
-        if ($validator->fails())
-        {
-            return response()->json(['code' => HttpResponse::HTTP_BAD_REQUEST, "message" => $validator->messages()], HttpResponse::HTTP_BAD_REQUEST);
-        }
+        $this->getInput($request);
+        $this->validator();
 
         $user            = new User;
         $user->firstName = $request->input('firstName');
@@ -57,54 +53,49 @@ class UserController extends RestfulController
         $user->password  = bcrypt($request->input['password']);
         if ($user->save())
         {
-            return response()->json(["result" => 'success'], HttpResponse::HTTP_OK);
+            return $this->responseApi('success');
         }
     }
 
     /**
      * Display user information.
      *
-     * @param $id User ID
+     * @param $id
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws ApiException
      */
     public function show($id)
     {
         $user = User::find($id);
         if (!$user)
         {
-            return response()->json(['code' => HttpResponse::HTTP_NOT_FOUND, "message" => "User not exist"], HttpResponse::HTTP_NOT_FOUND);
+            throw new ApiException("User does not exist", HttpResponse::HTTP_NOT_FOUND);
         }
 
-        return response()->json($user);
+        return $this->responseApi($user);
     }
 
     /**
-     * Update user in database.
+     * Update user in database
      *
      * @param Request $request
-     * @param         $id User ID
+     * @param         $id
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws ApiException
+     * @throws \App\Exceptions\ValidationException
      */
     public function update(Request $request, $id)
     {
         $user = User::find($id);
         if (!$user)
         {
-            return response()->json(['code' => HttpResponse::HTTP_NOT_FOUND, "message" => "User not exist"], HttpResponse::HTTP_NOT_FOUND);
+            throw new ApiException("User does not exist", HttpResponse::HTTP_NOT_FOUND);
         }
 
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'max:255',
-            'last_name'  => 'max:255',
-            'email'      => 'email|max:255|unique:users',
-            'password'   => 'min:6',
-        ]);
-        if ($validator->fails())
-        {
-            return response()->json(['code' => HttpResponse::HTTP_BAD_REQUEST, "message" => $validator->messages()], HttpResponse::HTTP_BAD_REQUEST);
-        }
+        $this->getInput($request);
+        $this->validator();
 
         $firstName = $request->input('first_name');
         $lastName  = $request->input('last_name');
@@ -130,28 +121,29 @@ class UserController extends RestfulController
 
         if ($user->update())
         {
-            return response()->json(["result" => 'success'], HttpResponse::HTTP_OK);
+            return $this->responseApi('success');
         }
     }
 
     /**
-     * Remove user from database.
+     * Remove user from database
      *
      * @param $id
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws ApiException
      */
     public function destroy($id)
     {
         $user = User::find($id);
         if (empty($user))
         {
-            return response()->json(['code' => HttpResponse::HTTP_NOT_FOUND, "message" => "User not exist"], HttpResponse::HTTP_NOT_FOUND);
+            throw new ApiException("User does not exist", HttpResponse::HTTP_NOT_FOUND);
         }
 
         if ($user->delete())
         {
-            return response()->json(["result" => 'success'], HttpResponse::HTTP_OK);
+            return $this->responseApi('success');
         }
     }
 }

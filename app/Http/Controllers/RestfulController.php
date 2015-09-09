@@ -1,81 +1,81 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Exceptions\ValidationException;
 use App\Http\Controllers;
+use Illuminate\Support\Facades\Validator;
+use \Illuminate\Http\Request;
 
 class RestfulController extends Controller
 {
 
     private $statusCode    = 200;
-    private $result;
     private $format        = 'json';
+    protected $inputRequest;
+    protected $rules = [];
+    protected $nameInputParams = [];
+
+    /**
+     * Get value of specific parameters
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function getInput(Request $request)
+    {
+        $this->inputRequest = $request->only($this->nameInputParams);
+    }
+
+    /**
+     * Validate the given request with the given rules.
+     *
+     * @param Request $request
+     * @param array   $messages
+     *
+     * @throws \App\Exceptions\ValidationException
+     */
+    public function validator(array $messages = [])
+    {
+        $validator = Validator::make($this->inputRequest, $this->rules);
+
+        $messages = ($messages) ? $messages : $validator->messages();
+
+        if ($validator->fails()) {
+            throw new ValidationException($messages);
+        }
+    }
     
     /**
      * Format API response in case successful
      *
      * @param  array $data
      *
-     * @return void
+     * @return array
      */
     public function formatApiSuccess($data = null)
     {
-        $this->statusCode = 200;
-
-        $this->result = [
+        return [
             'status' => 'success',
             'result' => $data,
         ];
     }
 
     /**
-     * Format API response in case failed
-     *
-     * @param     $errorMsg
-     * @param int $code
-     *
-     * @return void
-     */
-    public function formatApiError($errorMsg, $code = 400)
-    {
-        $this->statusCode = $code;
-        $error            = json_decode($errorMsg);
-        if (!is_object($error))
-        {
-            $messages = $errorMsg;
-        }
-        else
-        {
-            foreach (get_object_vars($error) as $item => $message)
-            {
-                $messages[] = [
-                    'item'    => $item,
-                    'message' => $message
-                ];
-            }
-        }
-
-        $this->result = [
-            'status' => 'error',
-            'result' => [
-                'code'        => $code,
-                'description' => $messages,
-            ],
-        ];
-    }
-
-    /**
      * Response api in JSON/XML/Plaintext
      *
-     * @return mixed
+     * @param $data
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function responseApi()
+    public function responseApi($data)
     {
         switch ($this->format)
         {
             case 'json':
-                return response()->json($this->result, $this->statusCode);
+                return response()->json($data, $this->statusCode);
             case 'xml':
-                return Response::make($this->result, $this->statusCode, ['Content-Type' => 'text/xml; charset=UTF-8']);
+                return 'Does not build this function';
             default:
                 break;
         }
