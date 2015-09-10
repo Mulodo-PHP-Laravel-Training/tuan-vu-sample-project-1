@@ -6,16 +6,14 @@
 (function () {
     'use strict';
 
-    var api = 'http://api.mulodo.dev';
-
     angular.module('mulodoApp', [
         'ngRoute',
         'angularUtils.directives.dirPagination',
         'ngMessages',
         'ngStorage'
     ])
-        .constant('urls', {
-            BASE: 'http://api.mulodo.dev/',
+        .constant('config', {
+            BASE_API: 'http://api.mulodo.dev',
             BASE_AUTH: 'http://api.mulodo.dev/auth'
         })
         .directive('navBar', function () {
@@ -39,10 +37,6 @@
                 }).
                 when('/signin', {
                     templateUrl: 'auth/login.html',
-                    controller: 'HomeController'
-                }).
-                when('/signout', {
-                    templateUrl: 'auth/logout.html',
                     controller: 'HomeController'
                 }).
                 when('/user', {
@@ -81,9 +75,11 @@
             }]);
         }])
         .run(function ($rootScope, $location, $localStorage) {
-            $rootScope.$on("$routeChangeStart", function () {
+            $rootScope.$on("$routeChangeStart", function (event, next) {
                 if ($localStorage.token == null) {
-                    $location.path("/signin");
+                    if (next.access != 'layout/home.html') {
+                        $location.path("/signin");
+                    }
                 }
             });
         })
@@ -91,7 +87,7 @@
             function ($rootScope, $scope, $location, $localStorage, Auth) {
                 function successAuth(res) {
                     $localStorage.token = res.token;
-                    $location.path('/');
+                    window.location = "/app";
                 }
 
                 $scope.signin = function () {
@@ -101,7 +97,7 @@
                     };
 
                     Auth.signin(formData, successAuth, function () {
-                        $rootScope.error = 'Invalid credentials';
+                        $rootScope.error = 'Invalid Credentials';
                     });
 
                 };
@@ -119,13 +115,13 @@
 
                 $scope.signout = function () {
                     Auth.signout(function () {
-                        $location.path('/');
+                        window.location = "/app";
                     });
                 };
                 $scope.token = $localStorage.token;
                 $scope.tokenClaims = Auth.getTokenClaims();
             }])
-        .controller('userListController', function ($scope, $http, $route) {
+        .controller('userListController', function ($scope, $http, $route, config) {
             $scope.users = [];
             $scope.total = 60;
             $scope.perPage = 5;
@@ -136,7 +132,7 @@
             };
 
             function getResultsPage(pageNumber) {
-                $http.get(api + '/user?page=' + pageNumber + '&limit=' + $scope.perPage)
+                $http.get(config.BASE_API + '/user?page=' + pageNumber + '&limit=' + $scope.perPage)
                     .then(function (result) {
                         $scope.users = result.data.data;
                         $scope.total = result.data.total;
@@ -148,16 +144,16 @@
             };
 
             $scope.deleteUser = function (id) {
-                $http.delete(api + '/user/' + id)
+                $http.delete(config.BASE_API + '/user/' + id)
                     .success(function () {
                         alert('Delete user successful!');
                         $route.reload();
                     });
             };
         })
-        .controller('userCreateController', function ($scope, $http, $httpParamSerializer, $location) {
+        .controller('userCreateController', function ($scope, $http, $httpParamSerializer, $location, config) {
             $scope.addUser = function (user) {
-                $http.post(api + '/user', $httpParamSerializer($scope.user), {
+                $http.post(config.BASE_API + '/user', $httpParamSerializer($scope.user), {
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 }).success(function () {
                     alert('Add new user successful!');
@@ -167,7 +163,7 @@
                 });
             };
         })
-        .factory('Auth', ['$http', '$localStorage', 'urls', function ($http, $localStorage, urls) {
+        .factory('Auth', ['$http', '$localStorage', 'config', function ($http, $localStorage, config) {
             function urlBase64Decode(str) {
                 var output = str.replace('-', '+').replace('_', '/');
                 switch (output.length % 4) {
@@ -199,10 +195,10 @@
 
             return {
                 signup: function (data, success, error) {
-                    $http.post(urls.BASE_AUTH + '/signin', data).success(success).error(error);
+                    $http.post(config.BASE_AUTH + '/signin', data).success(success).error(error);
                 },
                 signin: function (data, success, error) {
-                    $http.post(urls.BASE_AUTH + '/signin', data).success(success).error(error);
+                    $http.post(config.BASE_AUTH + '/signin', data).success(success).error(error);
                 },
                 signout: function (success) {
                     tokenClaims = {};

@@ -11,14 +11,14 @@
 |
 */
 
-Route::group(['middleware' => 'jwt.auth'], function () {
-    Route::get('/', function ()
-    {
-        return view('welcome');
-    });
-
-
+Route::get('/', function ()
+{
+    return redirect('/app');
 });
-Route::resource('user', 'UserController', ['except' => ['create', 'edit']]);
+
 Route::post('/auth/signin', 'TokenAuth\TokenAuthController@authenticate');
 Route::get('/auth/user', 'TokenAuth\TokenAuthController@getAuthenticatedUser');
+
+Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::resource('user', 'UserController', ['except' => ['create', 'edit']]);
+});

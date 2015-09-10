@@ -44,12 +44,30 @@ class TokenAuthController extends RestfulController
 
     public function getAuthenticatedUser()
     {
-        if(! $user = JWTAuth::parseToken()->authenticate())
+        if (!$user = JWTAuth::parseToken()->authenticate())
         {
             throw new ApiException('User not found', HttpResponse::HTTP_NOT_FOUND);
         }
 
         // the token is valid and we have found the user via the sub claim
         return response()->json(compact('user'));
+    }
+
+    public function register(Request $request)
+    {
+        $credentials = $this->getInput($request);
+        $this->validator();
+
+        try
+        {
+            $user = User::create($credentials);
+        }
+        catch (Exception $e)
+        {
+            return response()->json(['error' => 'User already exists.'], HttpResponse::HTTP_CONFLICT);
+        }
+        $token = JWTAuth::fromUser($user);
+
+        return Response::json(compact('token'));
     }
 }
