@@ -1,10 +1,11 @@
 <div class="panel panel-default">
-    <div class="panel-heading">Add new user</div>
+    <div class="panel-heading">Edit user</div>
 
     <div class="panel-body">
         <!-- FORM -->
-        <form name="userForm" ng-submit="userForm.$valid && addUser(userForm.$valid)" novalidate>
+        <form name="userForm" ng-submit="userForm.$valid && submit(userForm.$valid)" novalidate>
 
+            <input type="hidden" name="id" value="user.id" />
             <!-- NAME -->
             <div class="form-group">
                 <label>Name *</label>
@@ -35,25 +36,16 @@
             <!-- PASSWORD -->
             <div class="form-group">
                 <label>Password *</label>
-                <input type="password" class="form-control" name="password" id="pwd" ng-model="user.password" required ng-minlength="6"/>
-                 <div class="help-block message" ng-messages="userForm.password.$error" ng-show="userForm.password.$touched">
+                <input type="password" class="form-control" name="password" id="pwd" ng-model="user.password" ng-minlength="6"/>
+                <div class="help-block message" ng-messages="userForm.password.$error" ng-show="userForm.password.$touched">
                     <div ng-messages-include="common/messages.html"></div>
                     <p ng-message="minlength">The password must be at least 6 characters</p>
                 </div>
             </div>
 
-            <!-- RETYPE PASSWORD -->
-<!--             <div class="form-group">
-                <label>Confirm Password *</label>
-                <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" ng-model="user.confirmPassword" required ng-match="user.password" />
-                <div class="help-block message" ng-messages="userForm.confirmPassword.$error" ng-show="userForm.confirmPassword.$touched">
-                    <div ng-messages-include="common/messages.html"></div>
-                </div>
-            </div> -->
-
             <!-- SUBMIT BUTTON -->
             <button type="submit" class="btn btn-default" ng-disabled="userForm.$invalid">Save</button>
-
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
         </form>
 
     </div><!-- panel-body -->

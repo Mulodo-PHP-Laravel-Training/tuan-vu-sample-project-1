@@ -67,7 +67,7 @@ class UserController extends RestfulController
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::find($id, ['id', 'firstName', 'lastName', 'email']);
         if (!$user)
         {
             throw new ApiException("User does not exist", HttpResponse::HTTP_NOT_FOUND);

@@ -47,7 +47,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        $message = null;
+        $response = [
+            'status' => 'error',
+            'result' => [
+                'code'        => '',
+                'description' => ''
+            ]
+        ];
 
         if ($e instanceof ModelNotFoundException)
         {
@@ -56,23 +62,17 @@ class Handler extends ExceptionHandler
 
         if ($e instanceof MethodNotAllowedHttpException)
         {
-            $message = "Method not allowed for this router";
+            $response['result']['code']        = $e->getStatusCode();
+            $response['result']['description'] = "Method not allowed for this router";
+
+            return response()->json($response, $e->getStatusCode());
         }
 
 
-        if ($e instanceof \Exception)
+        if ($e instanceof ApiException)
         {
-            if (!$message)
-            {
-                $message = $e->getMessage();
-            }
-            $response = [
-                'status' => 'error',
-                'result' => [
-                    'code'        => $e->getStatusCode(),
-                    'description' => $message
-                ]
-            ];
+            $response['result']['code']        = $e->getStatusCode();
+            $response['result']['description'] = $e->getMessage();
 
             return response()->json($response, $e->getStatusCode());
         }

@@ -308,6 +308,20 @@ g=f[1];d.push(b[g]);d.push(f[2]||"");delete b[g]}});return d.join("")}var w=!1,n
 p.directive("ngView",v);p.directive("ngView",A);v.$inject=["$route","$anchorScroll","$animate"];A.$inject=["$compile","$controller","$route"]})(window,window.angular);
 //# sourceMappingURL=angular-route.min.js.map
 
+/*
+ AngularJS v1.4.5
+ (c) 2010-2015 Google, Inc. http://angularjs.org
+ License: MIT
+*/
+(function(I,c,B){'use strict';function D(s,e){e=e||{};c.forEach(e,function(c,k){delete e[k]});for(var k in s)!s.hasOwnProperty(k)||"$"===k.charAt(0)&&"$"===k.charAt(1)||(e[k]=s[k]);return e}var x=c.$$minErr("$resource"),C=/^(\.[a-zA-Z_$@][0-9a-zA-Z_$@]*)+$/;c.module("ngResource",["ng"]).provider("$resource",function(){var s=/^https?:\/\/[^\/]*/,e=this;this.defaults={stripTrailingSlashes:!0,actions:{get:{method:"GET"},save:{method:"POST"},query:{method:"GET",isArray:!0},remove:{method:"DELETE"},"delete":{method:"DELETE"}}};
+this.$get=["$http","$q",function(k,F){function v(c,h){this.template=c;this.defaults=r({},e.defaults,h);this.urlParams={}}function y(l,h,p,f){function d(b,q){var d={};q=r({},h,q);t(q,function(a,q){w(a)&&(a=a());var m;if(a&&a.charAt&&"@"==a.charAt(0)){m=b;var c=a.substr(1);if(null==c||""===c||"hasOwnProperty"===c||!C.test("."+c))throw x("badmember",c);for(var c=c.split("."),g=0,h=c.length;g<h&&m!==B;g++){var e=c[g];m=null!==m?m[e]:B}}else m=a;d[q]=m});return d}function G(b){return b.resource}function g(b){D(b||
+{},this)}var s=new v(l,f);p=r({},e.defaults.actions,p);g.prototype.toJSON=function(){var b=r({},this);delete b.$promise;delete b.$resolved;return b};t(p,function(b,q){var h=/^(POST|PUT|PATCH)$/i.test(b.method);g[q]=function(a,z,m,e){var f={},l,p,A;switch(arguments.length){case 4:A=e,p=m;case 3:case 2:if(w(z)){if(w(a)){p=a;A=z;break}p=z;A=m}else{f=a;l=z;p=m;break}case 1:w(a)?p=a:h?l=a:f=a;break;case 0:break;default:throw x("badargs",arguments.length);}var v=this instanceof g,n=v?l:b.isArray?[]:new g(l),
+u={},y=b.interceptor&&b.interceptor.response||G,C=b.interceptor&&b.interceptor.responseError||B;t(b,function(b,a){"params"!=a&&"isArray"!=a&&"interceptor"!=a&&(u[a]=H(b))});h&&(u.data=l);s.setUrlParams(u,r({},d(l,b.params||{}),f),b.url);f=k(u).then(function(a){var d=a.data,m=n.$promise;if(d){if(c.isArray(d)!==!!b.isArray)throw x("badcfg",q,b.isArray?"array":"object",c.isArray(d)?"array":"object",u.method,u.url);b.isArray?(n.length=0,t(d,function(a){"object"===typeof a?n.push(new g(a)):n.push(a)})):
+(D(d,n),n.$promise=m)}n.$resolved=!0;a.resource=n;return a},function(a){n.$resolved=!0;(A||E)(a);return F.reject(a)});f=f.then(function(a){var b=y(a);(p||E)(b,a.headers);return b},C);return v?f:(n.$promise=f,n.$resolved=!1,n)};g.prototype["$"+q]=function(a,b,d){w(a)&&(d=b,b=a,a={});a=g[q].call(this,a,this,b,d);return a.$promise||a}});g.bind=function(b){return y(l,r({},h,b),p)};return g}var E=c.noop,t=c.forEach,r=c.extend,H=c.copy,w=c.isFunction;v.prototype={setUrlParams:function(l,h,e){var f=this,
+d=e||f.template,k,g,r="",b=f.urlParams={};t(d.split(/\W/),function(c){if("hasOwnProperty"===c)throw x("badname");!/^\d+$/.test(c)&&c&&(new RegExp("(^|[^\\\\]):"+c+"(\\W|$)")).test(d)&&(b[c]=!0)});d=d.replace(/\\:/g,":");d=d.replace(s,function(b){r=b;return""});h=h||{};t(f.urlParams,function(b,e){k=h.hasOwnProperty(e)?h[e]:f.defaults[e];c.isDefined(k)&&null!==k?(g=encodeURIComponent(k).replace(/%40/gi,"@").replace(/%3A/gi,":").replace(/%24/g,"$").replace(/%2C/gi,",").replace(/%20/g,"%20").replace(/%26/gi,
+"&").replace(/%3D/gi,"=").replace(/%2B/gi,"+"),d=d.replace(new RegExp(":"+e+"(\\W|$)","g"),function(a,b){return g+b})):d=d.replace(new RegExp("(/?):"+e+"(\\W|$)","g"),function(a,b,c){return"/"==c.charAt(0)?c:b+c})});f.defaults.stripTrailingSlashes&&(d=d.replace(/\/+$/,"")||"/");d=d.replace(/\/\.(?=\w+($|\?))/,".");l.url=r+d.replace(/\/\\\./,"/.");t(h,function(b,c){f.urlParams[c]||(l.params=l.params||{},l.params[c]=b)})}};return y}]})})(window,window.angular);
+//# sourceMappingURL=angular-resource.min.js.map
+
 /**
  * dirPagination - AngularJS module for paginating (almost) anything.
  *
@@ -859,215 +873,234 @@ d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector
 /**
  * Created by Tuan on 9/1/15.
  */
+'use strict';
 
+angular.module('mulodoCMS', [
+    'mulodoCMS.controllers',
+    'mulodoCMS.services'
+])
+    .constant('config', {
+        BASE_API: 'http://api.mulodo.dev',
+        BASE_AUTH: 'http://api.mulodo.dev/auth'
+    })
+    .directive('navBar', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'layout/navbar.html'
+        };
+    })
+    .directive('footer', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'layout/footer.html'
+        };
+    })
+    .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
+        $routeProvider.when('/', {templateUrl: 'layout/home.html', controller: 'HomeController'});
+        $routeProvider.when('/signin', {templateUrl: 'auth/login.html', controller: 'HomeController'});
+        $routeProvider.when('/user', {templateUrl: 'user/index.html', controller: 'UserListController'});
+        $routeProvider.when('/user/create', {templateUrl: 'user/create.form.html', controller: 'UserCreateController'});
+        $routeProvider.when('/user/edit/:id', {templateUrl: 'user/edit.form.html', controller: 'UserEditController'});
+        $routeProvider.otherwise({redirectTo: '/'});
 
-(function () {
-    'use strict';
-
-    angular.module('mulodoApp', [
-        'ngRoute',
-        'angularUtils.directives.dirPagination',
-        'ngMessages',
-        'ngStorage'
-    ])
-        .constant('config', {
-            BASE_API: 'http://api.mulodo.dev',
-            BASE_AUTH: 'http://api.mulodo.dev/auth'
-        })
-        .directive('navBar', function () {
+        $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
             return {
-                restrict: 'E',
-                templateUrl: 'layout/navbar.html'
-            };
-        })
-        .directive('footer', function () {
-            return {
-                restrict: 'E',
-                templateUrl: 'layout/footer.html'
-            };
-        })
-        .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
-
-            $routeProvider.
-                when('/', {
-                    templateUrl: 'layout/home.html',
-                    controller: 'HomeController'
-                }).
-                when('/signin', {
-                    templateUrl: 'auth/login.html',
-                    controller: 'HomeController'
-                }).
-                when('/user', {
-                    templateUrl: 'user/index.html',
-                    controller: 'userListController'
-                }).
-                when('/user/create', {
-                    templateUrl: 'user/form.html',
-                    controller: 'userCreateController'
-                }).
-                when('/user/edit', {
-                    templateUrl: 'user/form.html',
-                    controller: 'userEditController'
-                }).
-                otherwise({
-                    redirectTo: '/'
-                });
-
-            $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
-                return {
-                    'request': function (config) {
-                        config.headers = config.headers || {};
-                        if ($localStorage.token) {
-                            config.headers.Authorization = 'Bearer ' + $localStorage.token;
-                        }
-                        return config;
-                    },
-                    'responseError': function (response) {
-                        if (response.status === 401 || response.status === 403) {
-                            delete $localStorage.token;
-                            $location.path('/signin');
-                        }
-                        return $q.reject(response);
+                'request': function (config) {
+                    config.headers = config.headers || {};
+                    if ($localStorage.token) {
+                        config.headers.Authorization = 'Bearer ' + $localStorage.token;
                     }
-                };
-            }]);
-        }])
-        .run(function ($rootScope, $location, $localStorage) {
-            $rootScope.$on("$routeChangeStart", function (event, next) {
-                if ($localStorage.token == null) {
-                    if (next.access != 'layout/home.html') {
-                        $location.path("/signin");
+                    return config;
+                },
+                'responseError': function (response) {
+                    if (response.status === 401 || response.status === 403) {
+                        delete $localStorage.token;
+                        $location.path('/signin');
                     }
-                }
-            });
-        })
-        .controller('HomeController', ['$rootScope', '$scope', '$location', '$localStorage', 'Auth',
-            function ($rootScope, $scope, $location, $localStorage, Auth) {
-                function successAuth(res) {
-                    $localStorage.token = res.token;
-                    window.location = "/app";
-                }
-
-                $scope.signin = function () {
-                    var formData = {
-                        email: $scope.email,
-                        password: $scope.password
-                    };
-
-                    Auth.signin(formData, successAuth, function () {
-                        $rootScope.error = 'Invalid Credentials';
-                    });
-
-                };
-
-                $scope.signup = function () {
-                    var formData = {
-                        email: $scope.email,
-                        password: $scope.password
-                    };
-
-                    Auth.signup(formData, successAuth, function (res) {
-                        $rootScope.error = res.error || 'Failed to sign up.';
-                    });
-                };
-
-                $scope.signout = function () {
-                    Auth.signout(function () {
-                        window.location = "/app";
-                    });
-                };
-                $scope.token = $localStorage.token;
-                $scope.tokenClaims = Auth.getTokenClaims();
-            }])
-        .controller('userListController', function ($scope, $http, $route, config) {
-            $scope.users = [];
-            $scope.total = 60;
-            $scope.perPage = 5;
-            getResultsPage(1);
-
-            $scope.pagination = {
-                current: 1
-            };
-
-            function getResultsPage(pageNumber) {
-                $http.get(config.BASE_API + '/user?page=' + pageNumber + '&limit=' + $scope.perPage)
-                    .then(function (result) {
-                        $scope.users = result.data.data;
-                        $scope.total = result.data.total;
-                    });
-            }
-
-            $scope.pageChanged = function (newPage) {
-                getResultsPage(newPage);
-            };
-
-            $scope.deleteUser = function (id) {
-                $http.delete(config.BASE_API + '/user/' + id)
-                    .success(function () {
-                        alert('Delete user successful!');
-                        $route.reload();
-                    });
-            };
-        })
-        .controller('userCreateController', function ($scope, $http, $httpParamSerializer, $location, config) {
-            $scope.addUser = function (user) {
-                $http.post(config.BASE_API + '/user', $httpParamSerializer($scope.user), {
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                }).success(function () {
-                    alert('Add new user successful!');
-                    $location.path("/user");
-                }).error(function () {
-                    alert('Error!');
-                });
-            };
-        })
-        .factory('Auth', ['$http', '$localStorage', 'config', function ($http, $localStorage, config) {
-            function urlBase64Decode(str) {
-                var output = str.replace('-', '+').replace('_', '/');
-                switch (output.length % 4) {
-                    case 0:
-                        break;
-                    case 2:
-                        output += '==';
-                        break;
-                    case 3:
-                        output += '=';
-                        break;
-                    default:
-                        throw 'Illegal base64url string!';
-                }
-                return window.atob(output);
-            }
-
-            function getClaimsFromToken() {
-                var token = $localStorage.token;
-                var user = {};
-                if (typeof token !== 'undefined') {
-                    var encoded = token.split('.')[1];
-                    user = JSON.parse(urlBase64Decode(encoded));
-                }
-                return user;
-            }
-
-            var tokenClaims = getClaimsFromToken();
-
-            return {
-                signup: function (data, success, error) {
-                    $http.post(config.BASE_AUTH + '/signin', data).success(success).error(error);
-                },
-                signin: function (data, success, error) {
-                    $http.post(config.BASE_AUTH + '/signin', data).success(success).error(error);
-                },
-                signout: function (success) {
-                    tokenClaims = {};
-                    delete $localStorage.token;
-                    success();
-                },
-                getTokenClaims: function () {
-                    return tokenClaims;
+                    return $q.reject(response);
                 }
             };
         }]);
+    }])
+    .run(['$rootScope', '$location', '$localStorage', function ($rootScope, $location, $localStorage) {
+        $rootScope.$on("$routeChangeStart", function (event, next) {
+            if ($localStorage.token == null) {
+                if (next.access != 'layout/home.html') {
+                    $location.path("/signin");
+                }
+            }
+        });
+    }]);
+/**
+ * Created by tuan on 9/9/15.
+ */
+'use strict';
 
-})();
+var app = angular.module('mulodoCMS.controllers', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngMessages', 'ngStorage']);
+
+app.controller('HomeController', ['$rootScope', '$scope', '$location', '$localStorage', 'Auth',
+    function ($rootScope, $scope, $location, $localStorage, Auth) {
+        function successAuth(res) {
+            $localStorage.token = res.token;
+            window.location = "/app";
+        }
+
+        $scope.signin = function () {
+            var formData = {
+                email: $scope.email,
+                password: $scope.password
+            };
+
+            Auth.signin(formData, successAuth, function () {
+                $rootScope.error = 'Invalid Credentials';
+            });
+
+        };
+
+        $scope.signup = function () {
+            var formData = {
+                email: $scope.email,
+                password: $scope.password
+            };
+
+            Auth.signup(formData, successAuth, function (res) {
+                $rootScope.error = res.error || 'Failed to sign up.';
+            });
+        };
+
+        $scope.signout = function () {
+            Auth.signout(function () {
+                window.location = "/app";
+            });
+        };
+        $scope.token = $localStorage.token;
+        $scope.tokenClaims = Auth.getTokenClaims();
+    }]);
+
+app.controller('UserListController', ['$scope', '$http', '$route', 'config', 'UsersFactory', 'UserFactory', function ($scope, $http, $route, config, UsersFactory, UserFactory) {
+    $scope.users = [];
+    $scope.total = 60;
+    $scope.perPage = 5;
+    getResultsPage(1);
+
+    $scope.pagination = {
+        current: 1
+    };
+
+    function getResultsPage(pageNumber) {
+        $http.get(config.BASE_API + '/user?page=' + pageNumber + '&limit=' + $scope.perPage)
+            .then(function (result) {
+                $scope.users = result.data.data;
+                $scope.total = result.data.total;
+            });
+    }
+
+    $scope.pageChanged = function (newPage) {
+        getResultsPage(newPage);
+    };
+
+    $scope.deleteUser = function (userId) {
+        UserFactory.delete({id: userId});
+        alert('Delete user successful!');
+        $route.reload();
+    };
+}]);
+
+app.controller('UserCreateController', ['$scope', '$http', '$httpParamSerializer', '$location', 'config', 'UsersFactory', function ($scope, $http, $httpParamSerializer, $location, config, UsersFactory) {
+    $scope.submit = function () {
+        UsersFactory.create($scope.user);
+        alert('Added new user successful!');
+        $location.path('/user');
+    }
+
+    $scope.cancel = function () {
+        $location.path('/user');
+    };
+}]);
+
+app.controller('UserEditController', ['$scope', '$routeParams', '$location', 'UserFactory', function ($scope, $routeParams, $location, UserFactory) {
+
+    $scope.user = UserFactory.show({id: $routeParams.id});
+
+    $scope.submit = function () {
+        UserFactory.update($scope.user);
+        alert('Udated user successful!');
+        $location.path('/user');
+    }
+
+    $scope.cancel = function () {
+        $location.path('/user');
+    };
+
+
+}]);
+/**
+ * Created by tuan on 9/10/15.
+ */
+'use strict';
+
+var services = angular.module('mulodoCMS.services', ['ngResource']);
+
+services.factory('UsersFactory', ['$resource', 'config', function ($resource, config) {
+    return $resource(config.BASE_API + '/user', {}, {
+        query: {method: 'GET', isArray: true},
+        create: {method: 'POST'}
+    });
+}]);
+
+services.factory('UserFactory', ['$resource', 'config', function ($resource, config) {
+    return $resource(config.BASE_API + '/user/:id', {}, {
+        show: {method: 'GET'},
+        update: {method: 'PUT', params: {id: 'id'}},
+        delete: {method: 'DELETE', params: {id: 'id'}}
+    });
+}]);
+
+services.factory('Auth', ['$http', '$localStorage', 'config', function ($http, $localStorage, config) {
+    function urlBase64Decode(str) {
+        var output = str.replace('-', '+').replace('_', '/');
+        switch (output.length % 4) {
+            case 0:
+                break;
+            case 2:
+                output += '==';
+                break;
+            case 3:
+                output += '=';
+                break;
+            default:
+                throw 'Illegal base64url string!';
+        }
+        return window.atob(output);
+    }
+
+    function getClaimsFromToken() {
+        var token = $localStorage.token, user = {};
+        if (typeof token !== 'undefined') {
+            var encoded = token.split('.')[1];
+            user = JSON.parse(urlBase64Decode(encoded));
+        }
+        return user;
+    }
+
+    var tokenClaims = getClaimsFromToken();
+
+    return {
+        signup: function (data, success, error) {
+            $http.post(config.BASE_AUTH + '/signin', data).success(success).error(error);
+        },
+        signin: function (data, success, error) {
+            $http.post(config.BASE_AUTH + '/signin', data).success(success).error(error);
+        },
+        signout: function (success) {
+            tokenClaims = {};
+            delete $localStorage.token;
+            success();
+        },
+        getTokenClaims: function () {
+            return tokenClaims;
+        }
+    };
+}]);
+
 //# sourceMappingURL=all.js.map

@@ -6,6 +6,7 @@
   "dependencies": {
     "angular": "^1.0.0",
     "angular-messages": "^1.4.5",
+    "angular-resource": "^1.4.5",
     "angular-route": "^1.4.0",
     "angular-ui-bootstrap": "^0.13.0",
     "angular-utils-pagination": "^0.8.0",
