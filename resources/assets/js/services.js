@@ -51,7 +51,7 @@ services.factory('Auth', ['$http', '$localStorage', 'config', function ($http, $
 
     return {
         signup: function (data, success, error) {
-            $http.post(config.BASE_AUTH + '/signin', data).success(success).error(error);
+            $http.post(config.BASE_AUTH + '/signup', data).success(success).error(error);
         },
         signin: function (data, success, error) {
             $http.post(config.BASE_AUTH + '/signin', data).success(success).error(error);
