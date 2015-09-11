@@ -9,7 +9,8 @@
         "laravel/framework": "5.1.*",
         "bestmomo/scafold": "dev-master",
         "barryvdh/laravel-ide-helper": "v2.1.0",
-        "tymon/jwt-auth": "0.5.*"
+        "tymon/jwt-auth": "0.5.*",
+        "barryvdh/laravel-cors": "0.7.x"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

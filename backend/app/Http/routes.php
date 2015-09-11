@@ -13,7 +13,7 @@
 
 Route::get('/', function ()
 {
-    return 'Welcome to default Mulodo example page';
+    return 'Welcome to default Mulodo Api example page';
 });
 
 Route::post('/auth/signin', 'TokenAuth\TokenAuthController@authenticate');

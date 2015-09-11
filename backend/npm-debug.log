@@ -52,11 +52,11 @@
 34 info git [ 'rev-list', '-n1', 'master' ]
 35 silly resolveHead barryvdh/laravel-cors resolved treeish: f6f389f06d89d73536cf7ffda58850d4d09bdc4d
 36 verbose resolveHead barryvdh/laravel-cors resolved Git URL: git://github.com/barryvdh/laravel-cors.git#f6f389f06d89d73536cf7ffda58850d4d09bdc4d
-37 silly resolveHead Git working directory: /tmp/npm-3975-6c9aff4e/git-cache-dfabfa8fb17f/f6f389f06d89d73536cf7ffda58850d4d09bdc4d
+37 silly resolveHead Git working directory: /tmp/npm-4076-4ca3913b/git-cache-7a14f88a83f9/f6f389f06d89d73536cf7ffda58850d4d09bdc4d
 38 info git [ 'clone',
 38 info git   '/Users/tuan/.npm/_git-remotes/git-github-com-barryvdh-laravel-cors-git-c17cd29e',
-38 info git   '/tmp/npm-3975-6c9aff4e/git-cache-dfabfa8fb17f/f6f389f06d89d73536cf7ffda58850d4d09bdc4d' ]
-39 verbose cloneResolved barryvdh/laravel-cors clone Cloning into '/tmp/npm-3975-6c9aff4e/git-cache-dfabfa8fb17f/f6f389f06d89d73536cf7ffda58850d4d09bdc4d'...
+38 info git   '/tmp/npm-4076-4ca3913b/git-cache-7a14f88a83f9/f6f389f06d89d73536cf7ffda58850d4d09bdc4d' ]
+39 verbose cloneResolved barryvdh/laravel-cors clone Cloning into '/tmp/npm-4076-4ca3913b/git-cache-7a14f88a83f9/f6f389f06d89d73536cf7ffda58850d4d09bdc4d'...
 39 verbose cloneResolved done.
 40 info git [ 'checkout', 'f6f389f06d89d73536cf7ffda58850d4d09bdc4d' ]
 41 verbose checkoutTreeish barryvdh/laravel-cors checkout Note: checking out 'f6f389f06d89d73536cf7ffda58850d4d09bdc4d'.
@@ -71,7 +71,7 @@
 41 verbose checkoutTreeish   git checkout -b new_branch_name
 41 verbose checkoutTreeish
 41 verbose checkoutTreeish HEAD is now at f6f389f... Merge pull request #64 from webpatser/master
-42 error addLocal Could not install /tmp/npm-3975-6c9aff4e/git-cache-dfabfa8fb17f/f6f389f06d89d73536cf7ffda58850d4d09bdc4d
+42 error addLocal Could not install /tmp/npm-4076-4ca3913b/git-cache-7a14f88a83f9/f6f389f06d89d73536cf7ffda58850d4d09bdc4d
 43 silly tryHTTPS attempting to clone git+https://github.com/barryvdh/laravel-cors.git
 44 silly tryClone cloning barryvdh/laravel-cors via git+https://github.com/barryvdh/laravel-cors.git
 45 verbose tryClone https-github-com-barryvdh-laravel-cors-git-48ce5fc8 not in flight; caching
@@ -85,11 +85,11 @@
 53 info git [ 'rev-list', '-n1', 'master' ]
 54 silly resolveHead barryvdh/laravel-cors resolved treeish: f6f389f06d89d73536cf7ffda58850d4d09bdc4d
 55 verbose resolveHead barryvdh/laravel-cors resolved Git URL: git+https://github.com/barryvdh/laravel-cors.git#f6f389f06d89d73536cf7ffda58850d4d09bdc4d
-56 silly resolveHead Git working directory: /tmp/npm-3975-6c9aff4e/git-cache-e677912b4343/f6f389f06d89d73536cf7ffda58850d4d09bdc4d
+56 silly resolveHead Git working directory: /tmp/npm-4076-4ca3913b/git-cache-f2c715cc895f/f6f389f06d89d73536cf7ffda58850d4d09bdc4d
 57 info git [ 'clone',
 57 info git   '/Users/tuan/.npm/_git-remotes/https-github-com-barryvdh-laravel-cors-git-48ce5fc8',
-57 info git   '/tmp/npm-3975-6c9aff4e/git-cache-e677912b4343/f6f389f06d89d73536cf7ffda58850d4d09bdc4d' ]
-58 verbose cloneResolved barryvdh/laravel-cors clone Cloning into '/tmp/npm-3975-6c9aff4e/git-cache-e677912b4343/f6f389f06d89d73536cf7ffda58850d4d09bdc4d'...
+57 info git   '/tmp/npm-4076-4ca3913b/git-cache-f2c715cc895f/f6f389f06d89d73536cf7ffda58850d4d09bdc4d' ]
+58 verbose cloneResolved barryvdh/laravel-cors clone Cloning into '/tmp/npm-4076-4ca3913b/git-cache-f2c715cc895f/f6f389f06d89d73536cf7ffda58850d4d09bdc4d'...
 58 verbose cloneResolved done.
 59 info git [ 'checkout', 'f6f389f06d89d73536cf7ffda58850d4d09bdc4d' ]
 60 verbose checkoutTreeish barryvdh/laravel-cors checkout Note: checking out 'f6f389f06d89d73536cf7ffda58850d4d09bdc4d'.
@@ -104,7 +104,7 @@
 60 verbose checkoutTreeish   git checkout -b new_branch_name
 60 verbose checkoutTreeish
 60 verbose checkoutTreeish HEAD is now at f6f389f... Merge pull request #64 from webpatser/master
-61 error addLocal Could not install /tmp/npm-3975-6c9aff4e/git-cache-e677912b4343/f6f389f06d89d73536cf7ffda58850d4d09bdc4d
+61 error addLocal Could not install /tmp/npm-4076-4ca3913b/git-cache-f2c715cc895f/f6f389f06d89d73536cf7ffda58850d4d09bdc4d
 62 silly trySSH attempting to clone git@github.com:barryvdh/laravel-cors.git
 63 silly tryClone cloning barryvdh/laravel-cors via git@github.com:barryvdh/laravel-cors.git
 64 verbose tryClone git-github-com-barryvdh-laravel-cors-git-eb1d40dd not in flight; caching
@@ -112,13 +112,15 @@
 66 silly validateExistingRemote barryvdh/laravel-cors remote.origin.url: git@github.com:barryvdh/laravel-cors.git
 67 verbose validateExistingRemote barryvdh/laravel-cors is updating existing cached remote /Users/tuan/.npm/_git-remotes/git-github-com-barryvdh-laravel-cors-git-eb1d40dd
 68 info git [ 'fetch', '-a', 'origin' ]
-69 error git fetch -a origin (git@github.com:barryvdh/laravel-cors.git) Host key verification failed.
+69 error git fetch -a origin (git@github.com:barryvdh/laravel-cors.git) Warning: Permanently added 'github.com,192.30.252.130' (RSA) to the list of known hosts.
+69 error git fetch -a origin (git@github.com:barryvdh/laravel-cors.git) Permission denied (publickey).
 69 error git fetch -a origin (git@github.com:barryvdh/laravel-cors.git) fatal: Could not read from remote repository.
 69 error git fetch -a origin (git@github.com:barryvdh/laravel-cors.git)
 69 error git fetch -a origin (git@github.com:barryvdh/laravel-cors.git) Please make sure you have the correct access rights
 69 error git fetch -a origin (git@github.com:barryvdh/laravel-cors.git) and the repository exists.
 70 verbose stack Error: Command failed: git fetch -a origin
-70 verbose stack Host key verification failed.
+70 verbose stack Warning: Permanently added 'github.com,192.30.252.130' (RSA) to the list of known hosts.
+70 verbose stack Permission denied (publickey).
 70 verbose stack fatal: Could not read from remote repository.
 70 verbose stack
 70 verbose stack Please make sure you have the correct access rights
@@ -137,7 +139,8 @@
 75 error npm  v2.11.3
 76 error code 128
 77 error Command failed: git fetch -a origin
-77 error Host key verification failed.
+77 error Warning: Permanently added 'github.com,192.30.252.130' (RSA) to the list of known hosts.
+77 error Permission denied (publickey).
 77 error fatal: Could not read from remote repository.
 77 error
 77 error Please make sure you have the correct access rights

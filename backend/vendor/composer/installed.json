@@ -3437,5 +3437,56 @@
             "cors",
             "stack"
         ]
+    },
+    {
+        "name": "barryvdh/laravel-cors",
+        "version": "v0.7.1",
+        "version_normalized": "0.7.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/barryvdh/laravel-cors.git",
+            "reference": "8a907402f44362e9d59e90c91d9f4a9992b514dd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/barryvdh/laravel-cors/zipball/8a907402f44362e9d59e90c91d9f4a9992b514dd",
+            "reference": "8a907402f44362e9d59e90c91d9f4a9992b514dd",
+            "shasum": ""
+        },
+        "require": {
+            "asm89/stack-cors": "0.2.x",
+            "illuminate/support": "~5.0.14|5.1.x",
+            "php": ">=5.4.0"
+        },
+        "time": "2015-07-12 13:03:19",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "0.7-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Barryvdh\\Cors\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Barry vd. Heuvel",
+                "email": "barryvdh@gmail.com"
+            }
+        ],
+        "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Laravel application",
+        "keywords": [
+            "api",
+            "cors",
+            "crossdomain",
+            "laravel"
+        ]
     }
 ]
