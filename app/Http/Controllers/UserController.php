@@ -67,8 +67,7 @@ class UserController extends RestfulController
      */
     public function show($id)
     {
-        $user = User::find($id, ['id', 'firstName', 'lastName', 'email']);
-        if (!$user)
+        if (!$user = User::find($id, ['id', 'firstName', 'lastName', 'email']))
         {
             throw new ApiException("User does not exist", HttpResponse::HTTP_NOT_FOUND);
         }
@@ -119,8 +118,7 @@ class UserController extends RestfulController
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        if (empty($user))
+        if (!$user = User::find($id))
         {
             throw new ApiException("User does not exist", HttpResponse::HTTP_NOT_FOUND);
         }
