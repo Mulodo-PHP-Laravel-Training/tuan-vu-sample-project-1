@@ -88,38 +88,22 @@ class UserController extends RestfulController
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-        if (!$user)
+        if (!$user = User::find($id))
         {
             throw new ApiException("User does not exist", HttpResponse::HTTP_NOT_FOUND);
         }
 
+        $this->rules['email']    = 'required|email|max:255';
+        $this->rules['password'] = 'min:6';
         $this->getInput($request);
         $this->validator();
 
-        $firstName = $request->input('first_name');
-        $lastName  = $request->input('last_name');
-        $email     = $request->input('email');
-        $password  = $request->input('password');
+        $user->firstName = $request->input('firstName');
+        $user->lastName  = $request->input('lastName');
+        $user->email     = $request->input('email');
+        $user->password  = bcrypt($request->input('password'));
 
-        if (!empty($firstName))
-        {
-            $user->first_name = $firstName;
-        }
-        elseif (!empty($lastName))
-        {
-            $user->last_name = $lastName;
-        }
-        elseif (!empty($email))
-        {
-            $user->email = $email;
-        }
-        elseif (!empty($password))
-        {
-            $user->password = bcrypt($password);
-        }
-
-        if ($user->update())
+        if ($user->save())
         {
             return $this->responseApi('success');
         }

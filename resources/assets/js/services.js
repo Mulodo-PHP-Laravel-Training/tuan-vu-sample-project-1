@@ -8,15 +8,15 @@ var services = angular.module('mulodoCMS.services', ['ngResource']);
 services.factory('UsersFactory', ['$resource', 'config', function ($resource, config) {
     return $resource(config.BASE_API + '/user', {}, {
         query: {method: 'GET', isArray: true},
-        create: {method: 'POST'}
+        create: {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}}
     });
 }]);
 
 services.factory('UserFactory', ['$resource', 'config', function ($resource, config) {
     return $resource(config.BASE_API + '/user/:id', {}, {
         show: {method: 'GET'},
-        update: {method: 'PUT', params: {id: 'id'}},
-        delete: {method: 'DELETE', params: {id: 'id'}}
+        update: {method: 'PUT', params: {id: '@id'}},
+        delete: {method: 'DELETE', params: {id: '@id'}}
     });
 }]);
 
