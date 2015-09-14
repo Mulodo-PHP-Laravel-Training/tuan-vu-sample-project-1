@@ -16,7 +16,7 @@ Route::get('/', function ()
     return 'Welcome to default Mulodo Api example page';
 });
 
-Route::post('/auth/signin', 'TokenAuth\TokenAuthController@authenticate');
+Route::post('/authentication/signin', 'TokenAuth\TokenAuthController@authenticate');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('user', 'UserController', ['except' => ['create', 'edit']]);

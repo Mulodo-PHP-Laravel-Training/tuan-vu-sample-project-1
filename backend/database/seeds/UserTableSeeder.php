@@ -13,6 +13,7 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
+            ['firstName' => 'Mulodo', 'lastName'  => 'Test', 'email' => 'test@mulodo.com', 'password' => bcrypt('mulodotest')],
             ['firstName' => 'Tuan', 'lastName'  => 'Vu', 'email' => 'vu.tuan@mulodo.com', 'password' => bcrypt('tuan')],
             ['firstName' => 'Tuan', 'lastName'  => 'Nguyen', 'email' => 'nguyen.tuan@mulodo.com', 'password' => bcrypt('tuan')],
             ['firstName' => 'Tuan', 'lastName'  => 'Ngoc', 'email' => 'ngoc.tuan@mulodo.com', 'password' => bcrypt('tuan')],

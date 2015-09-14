@@ -100,7 +100,10 @@ class UserController extends RestfulController
         $user->firstName = $request->input('firstName');
         $user->lastName  = $request->input('lastName');
         $user->email     = $request->input('email');
-        $user->password  = bcrypt($request->input('password'));
+        if($request->input['password'])
+        {
+            $user->password  = bcrypt($request->input['password']);
+        }
 
         if ($user->save())
         {

@@ -881,7 +881,7 @@ angular.module('mulodoCMS', [
 ])
     .constant('config', {
         BASE_API: 'http://api.mulodo.dev',
-        BASE_AUTH: 'http://api.mulodo.dev/auth'
+        BASE_AUTH: 'http://api.mulodo.dev/authentication'
     })
     .directive('navBar', function () {
         return {
@@ -1044,7 +1044,7 @@ var services = angular.module('mulodoCMS.services', ['ngResource']);
 services.factory('UsersFactory', ['$resource', 'config', function ($resource, config) {
     return $resource(config.BASE_API + '/user', {}, {
         query: {method: 'GET', isArray: true},
-        create: {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}}
+        create: {method: 'POST'}
     });
 }]);
 

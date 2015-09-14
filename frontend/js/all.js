@@ -881,7 +881,7 @@ angular.module('mulodoCMS', [
 ])
     .constant('config', {
         BASE_API: 'http://api.mulodo.dev',
-        BASE_AUTH: 'http://api.mulodo.dev/auth'
+        BASE_AUTH: 'http://api.mulodo.dev/authentication'
     })
     .directive('navBar', function () {
         return {
@@ -938,10 +938,8 @@ angular.module('mulodoCMS', [
 
 var app = angular.module('mulodoCMS.controllers', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngMessages', 'ngStorage']);
 
-app.controller('HomeController', ['$rootScope', '$scope', '$location', '$localStorage', 'Auth', '$http',
-    function ($rootScope, $scope, $location, $localStorage, Auth, $http) {
-        $http.defaults.useXDomain = true;
-
+app.controller('HomeController', ['$rootScope', '$scope', '$location', '$localStorage', 'Auth',
+    function ($rootScope, $scope, $location, $localStorage, Auth) {
         function successAuth(res) {
             $localStorage.token = res.token;
             window.location = "/";
@@ -1046,7 +1044,7 @@ var services = angular.module('mulodoCMS.services', ['ngResource']);
 services.factory('UsersFactory', ['$resource', 'config', function ($resource, config) {
     return $resource(config.BASE_API + '/user', {}, {
         query: {method: 'GET', isArray: true},
-        create: {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}}
+        create: {method: 'POST'}
     });
 }]);
 
