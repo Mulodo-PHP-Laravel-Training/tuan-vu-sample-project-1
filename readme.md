@@ -88,7 +88,7 @@ You also can directly access back-end API via Restful webservice as below:
 
 ## Credit
 
-Special thanks to **Mrs. Tien**, **Mr. Tam** and **Mr. Tuan Nguyen** have supported me to complete this project.
+Special thanks to **Mrs. Tien**, **Mr. Tam**, **Mr. Tuan Nguyen** and **Mr. Kondo** have supported me to complete this project.
 
 In addition, the project used packages as below:
 
