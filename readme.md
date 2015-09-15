@@ -61,9 +61,9 @@ Requirements
         $ php artisan migrate
         $ php artisan db:seed
 
-5. Generate key for back-end
+5. Set the application key for back-end. At backend folder, run:
 
-        $ php artisan generate:key
+        $ php artisan key:generate
 
 6. Start homestead for using
 
