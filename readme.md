@@ -61,7 +61,11 @@ Requirements
         $ php artisan migrate
         $ php artisan db:seed
 
-4. Start homestead for using.
+5. Generate key for back-end
+
+        $ php artisan generate:key
+
+6. Start homestead for using
 
         $ homestead up
     
@@ -85,6 +89,14 @@ You also can directly access back-end API via Restful webservice as below:
     POST    | http://api.mulodo.dev/user                    | firstName, lastName, email, password    | Yes       | User registration     |
     PUT     | http://api.mulodo.dev/user/{id}               | id                                      | Yes       | User updating         |
     DELETE  | http://api.mulodo.dev/user/{id}               | id                                      | Yes       | User remove           |
+
+Pass Token to API
+
+    Method: Header
+    Attribute: Authorization
+    Token format: Bearer {token}
+    For example:
+    - Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL2FwaS5tdWxvZG8uZGV2XC9hdXRoZW50aWNhdGlv blwvc2lnbmluIiwiaWF0IjoiMTQ0MjIwNDE5OSIsImV4cCI6IjE0NDIyMDc3OTkiLCJuYmYiOiIxNDQyMjA0MTk5IiwianRpIjoiZjkxYTUyOTM4OTMyNmRlMzdiMzNkYjIyNDU0NmZjNjkifQ .buLjSa10KI2Nk0kfzhCYJmaa3GrpYqZiXYeFK5iDq-8
 
 ## Credit
 
@@ -111,7 +123,6 @@ I also reference the articles as below:
 - https://docs.angularjs.org/api
 - http://campus.codeschool.com/courses/shaping-up-with-angular-js/
 - http://www.toptal.com/web/cookie-free-authentication-with-json-web-tokens-an-example-in-laravel-and-angularjs
-
 
 ## Authors
 Tuan Vu
