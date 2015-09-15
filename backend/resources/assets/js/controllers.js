@@ -57,8 +57,9 @@ app.controller('UserListController', ['$scope', '$http', '$route', 'config', 'Us
     function getResultsPage(pageNumber) {
         $http.get(config.BASE_API + '/user?page=' + pageNumber + '&limit=' + $scope.perPage)
             .then(function (result) {
-                $scope.users = result.data.data;
-                $scope.total = result.data.total;
+                var UserResponse = result.result.data;
+                $scope.users = UserResponse.data;
+                $scope.total = UserResponse.total;
             });
     }
 

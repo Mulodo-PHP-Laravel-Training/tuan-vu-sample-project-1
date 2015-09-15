@@ -31,7 +31,7 @@ class UserController extends RestfulController
         $limit = (empty($request->input('limit'))) ? 5 : $request->input('limit');
         $user  = User::paginate($limit);
 
-        return $this->responseApi($user);
+        return $this->responseApi($user->toArray());
     }
 
     /**
@@ -53,7 +53,7 @@ class UserController extends RestfulController
         $user->password  = bcrypt($request->input['password']);
         if ($user->save())
         {
-            return $this->responseApi('success');
+            return $this->responseApi();
         }
     }
 
@@ -100,14 +100,14 @@ class UserController extends RestfulController
         $user->firstName = $request->input('firstName');
         $user->lastName  = $request->input('lastName');
         $user->email     = $request->input('email');
-        if($request->input['password'])
+        if ($request->input['password'])
         {
-            $user->password  = bcrypt($request->input['password']);
+            $user->password = bcrypt($request->input['password']);
         }
 
         if ($user->save())
         {
-            return $this->responseApi('success');
+            return $this->responseApi();
         }
     }
 
@@ -128,7 +128,7 @@ class UserController extends RestfulController
 
         if ($user->delete())
         {
-            return $this->responseApi('success');
+            return $this->responseApi();
         }
     }
 }

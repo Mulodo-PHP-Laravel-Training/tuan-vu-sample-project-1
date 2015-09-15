@@ -39,7 +39,12 @@ class TokenAuthController extends RestfulController
             throw new TokenInvalidException('Invalid Credentials');
         }
 
-        return response()->json(compact('token'));
+        return response()->json([
+            'status' => 'success',
+            'result' => [
+                'access_token' => $token
+            ]
+        ]);
     }
 
     // TODO: To get user information from authentication
