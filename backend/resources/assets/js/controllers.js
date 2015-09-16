@@ -8,7 +8,7 @@ var app = angular.module('mulodoCMS.controllers', ['ngRoute', 'angularUtils.dire
 app.controller('HomeController', ['$rootScope', '$scope', '$location', '$localStorage', 'Auth',
     function ($rootScope, $scope, $location, $localStorage, Auth) {
         function successAuth(res) {
-            $localStorage.token = res.token;
+            $localStorage.token = res.result.access_token;
             window.location = "/";
         }
 
@@ -57,9 +57,9 @@ app.controller('UserListController', ['$scope', '$http', '$route', 'config', 'Us
     function getResultsPage(pageNumber) {
         $http.get(config.BASE_API + '/user?page=' + pageNumber + '&limit=' + $scope.perPage)
             .then(function (result) {
-                var UserResponse = result.result.data;
-                $scope.users = UserResponse.data;
-                $scope.total = UserResponse.total;
+                var UserResponse = result.data;
+                $scope.users = UserResponse.result.data;
+                $scope.total = UserResponse.result.total;
             });
     }
 
@@ -68,9 +68,11 @@ app.controller('UserListController', ['$scope', '$http', '$route', 'config', 'Us
     };
 
     $scope.deleteUser = function (userId) {
-        UserFactory.delete({id: userId});
-        alert('Delete user successful!');
-        $route.reload();
+        var deleteConfirmation = confirm("Are you sure want to delete this member?");
+        if (deleteConfirmation) {
+            UserFactory.delete({id: userId});
+            $route.reload();
+        }
     };
 }]);
 
