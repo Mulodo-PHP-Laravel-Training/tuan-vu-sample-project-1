@@ -5,6 +5,7 @@ namespace App\Exceptions;
 
 class ValidationException extends ApiException
 {
+
     /**
      * @var integer
      */

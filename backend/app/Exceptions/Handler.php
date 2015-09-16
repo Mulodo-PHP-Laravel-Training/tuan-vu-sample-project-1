@@ -77,6 +77,21 @@ class Handler extends ExceptionHandler
             return response()->json($response, $e->getStatusCode());
         }
 
+        if ($e instanceof ValidationException)
+        {
+            $error            = json_decode($e->getMessage());
+            foreach (get_object_vars($error) as $item => $message)
+            {
+                $description[] = [
+                    'item'    => $item,
+                    'message' => $message
+                ];
+            }
+            $response['result']['code']        = $e->getStatusCode();
+            $response['result']['description'] = $description;
+
+            return response()->json($response, $e->getStatusCode());
+        }
 
         if ($e instanceof ApiException)
         {
